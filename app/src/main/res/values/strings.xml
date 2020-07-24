@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Card Info Finder</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="scan_card_button">scan card</string>
+    <string name="input_number_button">input number</string>
+    <string name="card_info_finder_text">CARD INFO FINDER</string>
+    <string name="description_text">A bank card info finding utility.</string>
+    <string name="input_textLayout_label">15 digit card number</string>
+</resources>

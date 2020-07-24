@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".LandingFragment">
+
+    <TextView
+        android:id="@+id/headlineTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/card_info_finder_text"
+        android:textColor="@color/colorPrimaryDark"
+        style="@style/TextAppearance.MaterialComponents.Headline4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/description_text"
+        app:layout_constraintEnd_toEndOf="@+id/headlineTextView"
+        app:layout_constraintStart_toStartOf="@+id/headlineTextView"
+        app:layout_constraintTop_toBottomOf="@+id/headlineTextView" />
+
+    <Button
+        android:id="@+id/scanButton"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scan_card_button"
+        android:layout_marginBottom="8dp"
+        app:icon="@drawable/ic_keyboard_black_24dp"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toTopOf="@id/inputButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/inputButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/input_number_button"
+        android:layout_marginBottom="16dp"
+        app:icon="@drawable/ic_keyboard_black_24dp"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
