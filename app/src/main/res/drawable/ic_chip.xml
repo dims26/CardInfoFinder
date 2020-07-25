@@ -1,0 +1,10 @@
+<!--"Icon made by Freepik from www.flaticon.com"-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+  <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M437,31H75C33.645,31 0,64.645 0,106v300c0,41.355 33.645,75 75,75h362c41.355,0 75,-33.645 75,-75V106C512,64.645 478.355,31 437,31zM332,121.107h90v45h-90V121.107zM332,196.107h90v45h-90V196.107zM332,271.107h90v45h-90V271.107zM332,346.107h90v45h-90V346.107zM30,106c0,-24.813 20.187,-45 45,-45h105v30.107H60v225H30V106zM90,241.107v-45h90v45H90zM180,271.107v45H90v-45H180zM90,166.107v-45h90v45H90zM302,451H75c-24.813,0 -45,-20.187 -45,-45v-59.893h30v75h242V451zM302,391.107H90v-45h120v-225h92V391.107zM302,91.107h-92V61h92V91.107zM482,406c0,24.813 -20.187,45 -45,45H332v-29.893h120v-330H332V61h105c24.813,0 45,20.187 45,45V406z"/>
+</vector>

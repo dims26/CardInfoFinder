@@ -5,6 +5,9 @@
     <string name="scan_card_button">scan card</string>
     <string name="input_number_button">input number</string>
     <string name="card_info_finder_text">CARD INFO FINDER</string>
-    <string name="description_text">A bank card info finding utility.</string>
-    <string name="input_textLayout_label">15 digit card number</string>
+    <string name="description_text">A bank card info utility.</string>
+    <string name="input_textLayout_label">Input first 8 digits on card</string>
+    <string name="submit_text">submit</string>
+    <string name="cardNumber_placeholder_textView">XXXX XXXX</string>
+    <string name="card_chip_contentDescription">card_chip</string>
 </resources>

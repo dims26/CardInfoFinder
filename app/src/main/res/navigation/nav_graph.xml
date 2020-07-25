@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_landing" >
         <action
             android:id="@+id/action_landingFragment_to_inputFragment"
-            app:destination="@id/inputFragment" />
+            app:destination="@id/inputFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <action
             android:id="@+id/action_landingFragment_to_scanFragment"
             app:destination="@id/scanFragment"
@@ -28,7 +32,11 @@
         tools:layout="@layout/fragment_input" >
         <action
             android:id="@+id/action_inputFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
+            app:destination="@id/resultFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/scanFragment"
@@ -37,11 +45,19 @@
         tools:layout="@layout/fragment_scan" >
         <action
             android:id="@+id/action_scanFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
+            app:destination="@id/resultFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.dims.cardinfofinder.ResultFragment"
         android:label="fragment_result"
-        tools:layout="@layout/fragment_result" />
+        tools:layout="@layout/fragment_result" >
+        <argument
+            android:name="cardNumber"
+            app:argType="integer" />
+    </fragment>
 </navigation>
