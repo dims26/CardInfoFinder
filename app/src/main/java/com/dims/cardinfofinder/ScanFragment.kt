@@ -1,59 +1,120 @@
 package com.dims.cardinfofinder
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
+import com.google.android.gms.vision.CameraSource
+import com.google.android.gms.vision.text.TextRecognizer
+import com.google.android.material.snackbar.Snackbar
+import java.io.IOException
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ScanFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ScanFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val requestID = 123
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var surfaceView: SurfaceView
+    private lateinit var detectedTextView: TextView
+    private lateinit var proceedButton: Button
+    private lateinit var cameraSource: CameraSource
+    private lateinit var textRecognizer: TextRecognizer
+    private lateinit var viewModel: ScanViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_scan, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ScanFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ScanFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        with(view){
+            surfaceView = findViewById(R.id.surfaceView)
+            proceedButton = findViewById(R.id.proceedButton)
+            detectedTextView = findViewById(R.id.detectedTextView)
+        }
+
+        val factory = ViewModelFactory(requireActivity().application)
+        viewModel = ViewModelProvider(this, factory).get(ScanViewModel::class.java)
+
+        textRecognizer = viewModel.textRecognizer
+
+        if (!textRecognizer.isOperational) {
+            Log.w("ScanFragment", "Detector dependencies are not yet available.")
+            Snackbar.make(view.findViewById(android.R.id.content),
+                "OCR dependencies could not be downloaded", Snackbar.LENGTH_INDEFINITE)
+                .show()
+        }else{
+            cameraSource = viewModel.buildCameraSource()
+            initSurfaceView()
+            textRecognizer.setProcessor(viewModel.getOCRDetector())
+        }
+
+        viewModel.isVisible.observe(viewLifecycleOwner, Observer {
+            when(it){
+                false -> { proceedButton.isEnabled = false }
+                true -> {
+                    val detected = getString(R.string.detected_text) + viewModel.value.toString()
+                    detectedTextView.text = detected
+                    proceedButton.isEnabled = true 
                 }
             }
+        })
+
+        proceedButton.setOnClickListener {
+            val action =
+                ScanFragmentDirections.actionScanFragmentToResultFragment(viewModel.value!!)
+            NavHostFragment.findNavController(requireParentFragment()).navigate(action)
+        }
+    }
+
+    private fun initSurfaceView() {
+        if (
+            ActivityCompat.checkSelfPermission(requireActivity().applicationContext,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), requestID)
+        } else {
+            surfaceView.holder
+                .addCallback(
+                    viewModel.getSurfaceViewCallback(
+                        surfaceView,
+                        cameraSource,
+                        requestID
+                    )
+                )
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>,
+                                            grantResults: IntArray) {
+        if (requestCode != requestID) {
+            Log.d("ScanFragment", "Got unexpected permission result: $requestCode")
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            return
+        }
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            try {
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                    return
+                }
+                cameraSource.start(surfaceView.holder)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
     }
 }

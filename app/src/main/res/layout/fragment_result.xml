@@ -73,6 +73,7 @@
                 android:id="@+id/detail_progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:indeterminateTint="@color/colorPrimaryDark"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,24 +96,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
                 <TextView
                     android:id="@+id/card_type"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
                 <TextView
                     android:id="@+id/bank_name"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
                 <TextView
                     android:id="@+id/country"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:gravity="center"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

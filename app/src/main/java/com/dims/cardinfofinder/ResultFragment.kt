@@ -63,9 +63,7 @@ class ResultFragment : Fragment() {
                     Snackbar.make(requireView(),
                         "Loading failed, check Internet access and Card number.",
                         Snackbar.LENGTH_INDEFINITE
-                    ).setAction("GO BACK") {
-                        NavHostFragment.findNavController(requireParentFragment()).popBackStack()
-                    }.show()
+                    ).show()
                 }
                 NetworkState.LOADED -> {
                     progressBar.visibility = View.GONE
