@@ -1,4 +1,4 @@
-package com.dims.cardinfofinder
+package com.dims.cardinfofinder.model
 
 //brand or scheme
 data class Card(val scheme: String, val type: String, val bank: Bank, val country: Country)

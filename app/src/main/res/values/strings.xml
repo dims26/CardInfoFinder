@@ -12,5 +12,5 @@
     <string name="card_chip_contentDescription">card_chip</string>
     <string name="proceed_button">proceed</string>
     <string name="scan_directions_text">Hover camera above card. When a valid number is detected, the button will activate.</string>
-    <string name="detected_text">\"DETECTED DIGITS: \"</string>
+    <string name="detected_text">DETECTED DIGITS: </string>
 </resources>

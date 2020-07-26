@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".LandingFragment">
+    tools:context=".screens.landing.LandingFragment">
 
     <TextView
         android:id="@+id/headlineTextView"
@@ -31,20 +31,20 @@
         app:layout_constraintStart_toStartOf="@+id/headlineTextView"
         app:layout_constraintTop_toBottomOf="@+id/headlineTextView" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/scanButton"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/scan_card_button"
         android:layout_marginBottom="8dp"
-        app:icon="@drawable/ic_keyboard_black_24dp"
+        app:icon="@drawable/ic_camera_black_24dp"
         app:iconGravity="textStart"
         app:layout_constraintBottom_toTopOf="@id/inputButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/inputButton"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"

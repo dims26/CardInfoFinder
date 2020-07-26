@@ -1,4 +1,4 @@
-package com.dims.cardinfofinder
+package com.dims.cardinfofinder.screens.result
 
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +11,12 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavHostController
-import androidx.navigation.fragment.NavHostFragment
+import com.dims.cardinfofinder.R
+import com.dims.cardinfofinder.helpers.NetworkState
+import com.dims.cardinfofinder.helpers.ViewModelFactory
+import com.dims.cardinfofinder.network.CardService
+import com.dims.cardinfofinder.network.Network
+import com.dims.cardinfofinder.network.ServiceBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
@@ -24,7 +28,7 @@ class ResultFragment : Fragment() {
     private lateinit var countryTextView: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var detailLayout: LinearLayout
-    private lateinit var viewModel: ResultViewModel
+    lateinit var viewModel: ResultViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,24 +42,25 @@ class ResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(view){
-            cardNumberTextView = findViewById(R.id.card_number)
-            cardBrandTextView = findViewById(R.id.card_brand)
-            cardTypeTextView = findViewById(R.id.card_type)
-            bankNameTextView = findViewById(R.id.bank_name)
-            countryTextView = findViewById(R.id.country)
+            cardNumberTextView = findViewById(R.id.cardNumber_TextView)
+            cardBrandTextView = findViewById(R.id.cardBrand_textView)
+            cardTypeTextView = findViewById(R.id.cardType_textView)
+            bankNameTextView = findViewById(R.id.bankName_textView)
+            countryTextView = findViewById(R.id.country_textView)
             detailLayout = findViewById(R.id.detail_block)
             progressBar = findViewById(R.id.detail_progressBar)
         }
 
         val cardNumber = arguments?.getInt("cardNumber")!!
 
-        val factory = ViewModelFactory(requireActivity().application, cardNumber)
+        val factory = ViewModelFactory(cardNumber = cardNumber)
         viewModel = ViewModelProvider(this, factory).get(ResultViewModel::class.java)
 
-        val cardService = ServiceBuilder.buildService(CardService::class.java)
-        viewModel.loadCardDetails(cardService)
+        val cardService = ServiceBuilder.buildService(CardService::class.java)!!
+        val network = Network(cardService)
+        viewModel.loadCardDetails(network)
 
-        viewModel.isVisible.observe(viewLifecycleOwner, Observer {state ->
+        viewModel.loading.observe(viewLifecycleOwner, Observer { state ->
             when(state){
                 NetworkState.ERROR -> {
                     detailLayout.visibility = View.INVISIBLE
@@ -63,7 +68,7 @@ class ResultFragment : Fragment() {
                     Snackbar.make(requireView(),
                         "Loading failed, check Internet access and Card number.",
                         Snackbar.LENGTH_INDEFINITE
-                    ).show()
+                    ).setAction("CANCEL"){}.show()
                 }
                 NetworkState.LOADED -> {
                     progressBar.visibility = View.GONE

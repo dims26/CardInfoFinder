@@ -1,4 +1,4 @@
-package com.dims.cardinfofinder
+package com.dims.cardinfofinder.screens.landing
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
+import com.dims.cardinfofinder.R
 import com.google.android.material.button.MaterialButton
 
 class LandingFragment : Fragment() {
@@ -20,12 +21,14 @@ class LandingFragment : Fragment() {
         val scanButton = view.findViewById<MaterialButton>(R.id.scanButton)
 
         inputButton.setOnClickListener {
-            val action = LandingFragmentDirections.actionLandingFragmentToInputFragment()
-            NavHostFragment.findNavController(requireParentFragment()).navigate(action)
+            val action =
+                LandingFragmentDirections.actionLandingFragmentToInputFragment()
+            NavHostFragment.findNavController(this).navigate(action)
         }
         scanButton.setOnClickListener {
-            val action = LandingFragmentDirections.actionLandingFragmentToScanFragment()
-            NavHostFragment.findNavController(requireParentFragment()).navigate(action)
+            val action =
+                LandingFragmentDirections.actionLandingFragmentToScanFragment()
+            NavHostFragment.findNavController(this).navigate(action)
         }
 
         return view

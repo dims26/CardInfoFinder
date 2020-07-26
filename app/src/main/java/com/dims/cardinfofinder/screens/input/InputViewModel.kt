@@ -1,17 +1,16 @@
-package com.dims.cardinfofinder
+package com.dims.cardinfofinder.screens.input
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
+import com.dims.cardinfofinder.helpers.ErrorState
 import java.lang.NumberFormatException
 import kotlin.properties.Delegates
 
-class InputViewModel(application: Application) : AndroidViewModel(application) {
+class InputViewModel : ViewModel() {
     var textLiveData = MutableLiveData<String>()
     private val valueDelegate = Delegates.notNull<Int>()
     var value by valueDelegate
+        private set
     private val _error = MutableLiveData(ErrorState.IDLE)
     val error: LiveData<ErrorState> get() = _error
     private val _textObserver = Observer<String> {
@@ -23,12 +22,13 @@ class InputViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun check(text: String){
-        _error.value =
-            if (text.length == 8) ErrorState.INVISIBLE else ErrorState.VISIBLE
-        try {
-            value = Integer.valueOf(text)
-        }catch (e: NumberFormatException){
-            _error.value = ErrorState.VISIBLE
-        }
+        if (text.length == 8) {
+            try {
+                value = Integer.valueOf(text)
+                _error.postValue(ErrorState.INVISIBLE)
+            } catch (e: NumberFormatException) {
+                _error.postValue(ErrorState.VISIBLE)
+            }
+        }else _error.postValue(ErrorState.VISIBLE)
     }
 }

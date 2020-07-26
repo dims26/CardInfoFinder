@@ -1,12 +1,14 @@
-package com.dims.cardinfofinder
+package com.dims.cardinfofinder.network
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.dims.cardinfofinder.helpers.NetworkState
+import com.dims.cardinfofinder.model.Card
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class Network(private val cardService: CardService) {
+
     fun getCard(
         number: Int,
         indicator: MutableLiveData<NetworkState>,
@@ -16,7 +18,7 @@ class Network(private val cardService: CardService) {
         call.enqueue(getCardCallback(indicator, card))
     }
 
-    private fun getCardCallback(
+    fun getCardCallback(
         indicator: MutableLiveData<NetworkState>,
         cardLiveData: MutableLiveData<Card>
     ): Callback<Card>{

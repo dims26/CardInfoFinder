@@ -1,4 +1,4 @@
-package com.dims.cardinfofinder
+package com.dims.cardinfofinder.helpers
 
 enum class ErrorState {
     IDLE, VISIBLE, INVISIBLE

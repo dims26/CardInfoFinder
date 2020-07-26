@@ -1,13 +1,11 @@
-package com.dims.cardinfofinder
+package com.dims.cardinfofinder.screens.scan
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.SurfaceView
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
@@ -15,6 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.dims.cardinfofinder.ocr.Processor
+import com.dims.cardinfofinder.R
+import com.dims.cardinfofinder.helpers.ViewModelFactory
+import com.dims.cardinfofinder.ocr.OCRConfig
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.text.TextRecognizer
 import com.google.android.material.snackbar.Snackbar
@@ -29,7 +31,8 @@ class ScanFragment : Fragment() {
     private lateinit var proceedButton: Button
     private lateinit var cameraSource: CameraSource
     private lateinit var textRecognizer: TextRecognizer
-    private lateinit var viewModel: ScanViewModel
+    lateinit var viewModel: ScanViewModel
+    private lateinit var ocrConfig: OCRConfig
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -40,26 +43,30 @@ class ScanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ocrConfig = OCRConfig(requireActivity().application)
+
         with(view){
             surfaceView = findViewById(R.id.surfaceView)
             proceedButton = findViewById(R.id.proceedButton)
             detectedTextView = findViewById(R.id.detectedTextView)
         }
 
-        val factory = ViewModelFactory(requireActivity().application)
+        val factory = ViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(ScanViewModel::class.java)
 
-        textRecognizer = viewModel.textRecognizer
-
+        textRecognizer = ocrConfig.textRecognizer
         if (!textRecognizer.isOperational) {
             Log.w("ScanFragment", "Detector dependencies are not yet available.")
             Snackbar.make(view.findViewById(android.R.id.content),
                 "OCR dependencies could not be downloaded", Snackbar.LENGTH_INDEFINITE)
+                .setAction("CANCEL"){}
                 .show()
         }else{
-            cameraSource = viewModel.buildCameraSource()
+            cameraSource = ocrConfig.cameraSource
             initSurfaceView()
-            textRecognizer.setProcessor(viewModel.getOCRDetector())
+            val processor =
+                Processor(viewModel::check)
+            textRecognizer.setProcessor(processor)
         }
 
         viewModel.isVisible.observe(viewLifecycleOwner, Observer {
@@ -75,8 +82,10 @@ class ScanFragment : Fragment() {
 
         proceedButton.setOnClickListener {
             val action =
-                ScanFragmentDirections.actionScanFragmentToResultFragment(viewModel.value!!)
-            NavHostFragment.findNavController(requireParentFragment()).navigate(action)
+                ScanFragmentDirections.actionScanFragmentToResultFragment(
+                    viewModel.value!!
+                )
+            NavHostFragment.findNavController(this).navigate(action)
         }
     }
 
@@ -89,12 +98,30 @@ class ScanFragment : Fragment() {
         } else {
             surfaceView.holder
                 .addCallback(
-                    viewModel.getSurfaceViewCallback(
-                        surfaceView,
-                        cameraSource,
-                        requestID
-                    )
+                    getSurfaceViewCallback(surfaceView, cameraSource)
                 )
+        }
+    }
+
+    private fun getSurfaceViewCallback(surfaceView: SurfaceView, cameraSource: CameraSource)
+            : SurfaceHolder.Callback {
+        return object : SurfaceHolder.Callback {
+            override fun surfaceChanged(holder: SurfaceHolder?, format: Int,
+                                        width: Int, height: Int) {
+            }
+
+            override fun surfaceDestroyed(holder: SurfaceHolder?) {
+                cameraSource.stop()
+            }
+
+            @SuppressLint("MissingPermission")
+            override fun surfaceCreated(holder: SurfaceHolder?) {
+                try {
+                    cameraSource.start(surfaceView.holder)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 
@@ -113,6 +140,10 @@ class ScanFragment : Fragment() {
                 }
                 cameraSource.start(surfaceView.holder)
             } catch (e: IOException) {
+                Snackbar.make(requireView().findViewById(android.R.id.content),
+                    "Unable to display camera feed", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("CANCEL"){}
+                    .show()
                 e.printStackTrace()
             }
         }

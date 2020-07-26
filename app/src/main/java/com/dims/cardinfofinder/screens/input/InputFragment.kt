@@ -1,17 +1,24 @@
-package com.dims.cardinfofinder
+package com.dims.cardinfofinder.screens.input
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.dims.cardinfofinder.R
+import com.dims.cardinfofinder.helpers.ErrorState
+import com.dims.cardinfofinder.helpers.ViewModelFactory
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+
 
 class InputFragment : Fragment() {
     private lateinit var textField: TextInputLayout
@@ -29,11 +36,12 @@ class InputFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory = ViewModelFactory(requireActivity().application)
+        val factory = ViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(InputViewModel::class.java)
 
         submitButton = view.findViewById(R.id.submitButton)
         textField = view.findViewById(R.id.cardNumber_textField)
+        showSoftKeyboard(textField.editText)
         textField.editText?.doOnTextChanged { inputText, _, _, _ ->
             // Respond to input text change
             viewModel.textLiveData.postValue(
@@ -62,8 +70,24 @@ class InputFragment : Fragment() {
 
         submitButton.setOnClickListener {
             val action =
-                InputFragmentDirections.actionInputFragmentToResultFragment(viewModel.value)
-            NavHostFragment.findNavController(requireParentFragment()).navigate(action)
+                InputFragmentDirections.actionInputFragmentToResultFragment(
+                    viewModel.value
+                )
+            hideSoftKeyboard(textField.editText)
+            NavHostFragment.findNavController(this).navigate(action)
+        }
+    }
+
+    private fun showSoftKeyboard(textField: EditText?) {
+        if (textField?.requestFocus() == true) {
+            val imm = textField.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.showSoftInput(textField, InputMethodManager.SHOW_FORCED)
+        }
+    }
+    private fun hideSoftKeyboard(textField: EditText?) {
+        if (textField?.hasFocus() == true) {
+            val imm = textField.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.hideSoftInputFromWindow(textField.windowToken, 0)
         }
     }
 
