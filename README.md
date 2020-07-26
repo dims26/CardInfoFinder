@@ -48,4 +48,4 @@ An app used to search for Bank card Information and also features OCR functional
   * [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
   * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
   * [Navigation](https://developer.android.com/jetpack/androidx/releases/navigation)
-  * [Retrofit 2](https://github.com/square/retrofit) - A type-safe HTTP client for Android and Java.
+* [Retrofit 2](https://github.com/square/retrofit) - A type-safe HTTP client for Android and Java.
