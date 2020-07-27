@@ -2,7 +2,6 @@ package com.dims.cardinfofinder
 
 import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -12,17 +11,14 @@ import com.dims.cardinfofinder.helpers.NetworkState
 import com.dims.cardinfofinder.model.Bank
 import com.dims.cardinfofinder.model.Card
 import com.dims.cardinfofinder.model.Country
-import com.dims.cardinfofinder.screens.MainActivity
 import com.dims.cardinfofinder.screens.result.ResultFragment
 import org.hamcrest.Matchers.not
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class ResultFragmentTest {
-    private lateinit var activityScenario : ActivityScenario<MainActivity>
     private val card = Card("mastercard", "debit", Bank("GTBank"), Country("Nigeria"))
     private val snackbarMessage = "Loading failed, check Internet access and Card number."
     private val cardNumber = 53998345
@@ -30,11 +26,6 @@ class ResultFragmentTest {
         Bundle().apply {
             putInt("cardNumber", cardNumber)
         }
-    }
-
-    @Before
-    fun launchActivity() {
-        activityScenario = ActivityScenario.launch(MainActivity::class.java)
     }
 
     @Test

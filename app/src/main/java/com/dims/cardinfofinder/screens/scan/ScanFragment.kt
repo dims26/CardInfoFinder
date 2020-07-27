@@ -57,7 +57,7 @@ class ScanFragment : Fragment() {
         textRecognizer = ocrConfig.textRecognizer
         if (!textRecognizer.isOperational) {
             Log.w("ScanFragment", "Detector dependencies are not yet available.")
-            Snackbar.make(view.findViewById(android.R.id.content),
+            Snackbar.make(view,
                 "OCR dependencies could not be downloaded", Snackbar.LENGTH_INDEFINITE)
                 .setAction("CANCEL"){}
                 .show()
@@ -140,7 +140,7 @@ class ScanFragment : Fragment() {
                 }
                 cameraSource.start(surfaceView.holder)
             } catch (e: IOException) {
-                Snackbar.make(requireView().findViewById(android.R.id.content),
+                Snackbar.make(requireView(),
                     "Unable to display camera feed", Snackbar.LENGTH_INDEFINITE)
                     .setAction("CANCEL"){}
                     .show()

@@ -1,22 +1,20 @@
 package com.dims.cardinfofinder
 
-import androidx.fragment.app.testing.launchFragment
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.dims.cardinfofinder.screens.MainActivity
+import androidx.test.rule.GrantPermissionRule
 import com.dims.cardinfofinder.screens.input.InputFragment
 import com.dims.cardinfofinder.screens.scan.ScanFragment
 import com.dims.cardinfofinder.screens.scan.ScanFragmentDirections
 import org.hamcrest.Matchers.not
-import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -28,12 +26,8 @@ class ScanFragmentTest {
     private val CORRECT_TEXT = "53998345"
     private val INCORRECT_TEXT = "123456789"
 
-    private lateinit var activityScenario : ActivityScenario<MainActivity>
-
-    @Before
-    fun launchActivity() {
-        activityScenario = ActivityScenario.launch(MainActivity::class.java)
-    }
+    @get:Rule
+    val mRuntimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.CAMERA)
 
     @Test
     fun test_surfaceView_shouldBeDisplayed(){

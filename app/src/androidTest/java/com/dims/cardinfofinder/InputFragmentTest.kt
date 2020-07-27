@@ -1,10 +1,8 @@
 package com.dims.cardinfofinder
 
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
@@ -14,12 +12,10 @@ import androidx.test.espresso.assertion.ViewAssertions.selectedDescendantsMatch
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.dims.cardinfofinder.screens.MainActivity
 import com.dims.cardinfofinder.screens.input.InputFragment
 import com.dims.cardinfofinder.screens.input.InputFragmentDirections
 import com.google.android.material.textfield.TextInputEditText
 import org.hamcrest.Matchers.not
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -27,15 +23,8 @@ import org.mockito.Mockito
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class InputFragmentTest {
-    private lateinit var activityScenario: ActivityScenario<MainActivity>
-
     private val CORRECT_TEXT = "53998345"
     private val INCORRECT_TEXT = "123456789"
-
-    @Before
-    fun setup(){
-        activityScenario = ActivityScenario.launch(MainActivity::class.java)
-    }
 
     @Test
     fun test_cardNumberTextField_shouldBeDisplayed(){

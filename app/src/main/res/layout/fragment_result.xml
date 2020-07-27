@@ -75,7 +75,7 @@
                 android:id="@+id/detail_progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:indeterminateTint="@color/colorSecondaryDark"
+                android:indeterminateTint="@color/colorPrimaryDark"
                 android:visibility="visible"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
