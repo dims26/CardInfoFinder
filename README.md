@@ -1,5 +1,5 @@
 # CardInfoFinder
-An app used to search for Bank card Information and also features OCR functionality using the phone camera. This application makes use of Binlist API and Google Mobile Vision library.
+An app used to search for Bank card Information and also features OCR functionality using the phone camera. This application makes use of Binlist API and Google Mobile Vision - Text recognition library.
 
 ## Features
 * Scan bank card
@@ -10,6 +10,7 @@ An app used to search for Bank card Information and also features OCR functional
 * A single Activity application, conforming to the MVVM application architecture.
 * Consists of four Fragments under the fragment package, each representing a screen. Calls to the web are made using a Retrofit service. 
 * Card scanning is implemented using the Google Mobile Vision library, scanning is done offline. OCR related code is situated in the OCR package and consists of configuration and data processing logic.
+* Unit and UI tests
 
 ## Screens
 <table border="0">
@@ -49,3 +50,4 @@ An app used to search for Bank card Information and also features OCR functional
   * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
   * [Navigation](https://developer.android.com/jetpack/androidx/releases/navigation)
 * [Retrofit 2](https://github.com/square/retrofit) - A type-safe HTTP client for Android and Java.
+* [Google Text Recognition](https://developers.google.com/vision/android/text-overview) Text Recognition API that recognizes text in any Latin based language.
